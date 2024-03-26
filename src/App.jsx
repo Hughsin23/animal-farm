@@ -2,16 +2,20 @@ import { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
+  // take the search function and animals state from the useAnimalSearch custom hook
   const { search, animals } = useAnimalSearch();
 
+  // A custom hook to have the animals able to be searched with a fetch to our own server, then updates the state to the search results. The last query is stored in local storage for user QOL
   const useAnimalSearch = () => {
     const [animals, setAnimals] = useState([]);
-
+    
+    // grabs last search from local storage 
     useEffect(() => {
       const lastUserQuery = localStorage.getItem("lastUserQuery");
-      aniSearch(lastUserQuery);
+      animalSearch(lastUserQuery);
     }, []);
 
+    // search function to grab from our server
     const animalSearch = async (q) => {
       const response = await fetch(`http://localhost:8080?${q}`);
       const data = await response.json();
@@ -20,6 +24,7 @@ function App() {
       localStorage.setItem("lastUserQuery", q);
     };
 
+    // return the search function for use in the GUI, and the animal state
     return { search, animals };
   };
 
@@ -32,7 +37,16 @@ function App() {
         placeholder="Search"
         onChange={(e) => console.log(e.target.value)}
       ></input>
-
+      <ul>
+        {animals.map((animal) => (
+          <li key={animal.id}>
+            {animal.type}
+            {animal.name}
+            {animal.age}
+          </li>
+        ))}
+        {animals.length === 0 && "No animals found"}
+      </ul>
     </main>
   );
 }
