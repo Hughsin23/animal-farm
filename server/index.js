@@ -21,8 +21,8 @@ const animals = [...Array(300).keys()].map((id) => {
   };
 });
 
-//endpoint to search for animals
-app.get("animals", (req, res) => {
+//endpoint to search for animals, would usually have the get to have an endpoint such as /animals, but we wanted to serve something on the index of the API for now
+app.get("", (req, res) => {
   const q = req.query.q?.toLocaleLowerCase() || "";
   const results = animals.filter((animal) =>
     animal.type.toLocaleLowerCase().includes(q)
@@ -32,5 +32,5 @@ app.get("animals", (req, res) => {
 });
 
 app.listen(8080, () => {
-  console.log("hello 8080");
+  console.log("Listening on port http://localhost:8080");
 });
