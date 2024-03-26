@@ -8,8 +8,8 @@ function App() {
   // A custom hook to have the animals able to be searched with a fetch to our own server, then updates the state to the search results. The last query is stored in local storage for user QOL
   const useAnimalSearch = () => {
     const [animals, setAnimals] = useState([]);
-    
-    // grabs last search from local storage 
+
+    // grabs last search from local storage
     useEffect(() => {
       const lastUserQuery = localStorage.getItem("lastUserQuery");
       animalSearch(lastUserQuery);
@@ -45,8 +45,8 @@ function App() {
             {animal.age}
           </li>
         ))}
-        {animals.length === 0 && "No animals found"}
       </ul>
+      {animals.length === 0 && "No animals found"}
     </main>
   );
 }
