@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 function App() {
   // take the search function and animals state from the useAnimalSearch custom hook
@@ -12,11 +13,11 @@ function App() {
     // grabs last search from local storage
     useEffect(() => {
       const lastUserQuery = localStorage.getItem("lastUserQuery");
-      animalSearch(lastUserQuery);
+      search(lastUserQuery);
     }, []);
 
     // search function to grab from our server
-    const animalSearch = async (q) => {
+    const search = async (q) => {
       const response = await fetch(`http://localhost:8080?${q}`);
       const data = await response.json();
       setAnimals(data);
@@ -37,16 +38,18 @@ function App() {
         placeholder="Search"
         onChange={(e) => console.log(e.target.value)}
       ></input>
-      <ul>
-        {animals.map((animal) => (
-          <li key={animal.id}>
-            {animal.type}
-            {animal.name}
-            {animal.age}
-          </li>
-        ))}
-      </ul>
-      {animals.length === 0 && "No animals found"}
+      <ErrorBoundary fallback={<p>Something went wrong 😭</p>}>
+        <ul>
+          {animals.map((animal) => (
+            <li key={animal.id}>
+              {animal.type}
+              {animal.name}
+              {animal.age}
+            </li>
+          ))}
+        </ul>
+        {animals.length === 0 && "No animals found"}
+      </ErrorBoundary>
     </main>
   );
 }
