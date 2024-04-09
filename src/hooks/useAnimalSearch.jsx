@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+// A custom hook to have the animals able to be searched with a fetch to our own server, then updates the state to the search results. The last query is stored in local storage for user QOL
 
 const useAnimalSearch = () => {
   const [animals, setAnimals] = useState([]);
